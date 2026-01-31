@@ -1,4 +1,4 @@
-<!-- AUTO GENERATED DO NOT EDIT - run 'npm run docs' to update-->
+<!-- AUTO GENERATED DO NOT EDIT - run 'npm run docs' to update-->docs/tool-reference.md 
 
 # Chrome DevTools MCP Tool Reference
 
