@@ -14,7 +14,10 @@ jobs:
   ready-for-review:
     if: >-
       github.event.pull_request.draft == true &&
-      github.event.pull_request.user.login == 'Copilot'
+      contains(
+        fromJson('["Copilot","github-copilot[bot]","copilot-swe-agent","copilot-swe-agent[bot]"]'),
+        github.event.pull_request.user.login
+      )
     runs-on: ubuntu-latest
     steps:
       - name: Mark pull request ready for review
