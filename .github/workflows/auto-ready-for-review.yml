@@ -1,0 +1,35 @@
+name: Auto ready for review
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+permissions:
+  pull-requests: write
+
+jobs:
+  ready-for-review:
+    if: >-
+      github.event.pull_request.draft == true &&
+      contains(
+        fromJson('["Copilot","github-copilot[bot]","copilot-swe-agent","copilot-swe-agent[bot]"]'),
+        github.event.pull_request.user.login
+      )
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mark pull request ready for review
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        with:
+          script: |
+            const pullRequestId = context.payload.pull_request.node_id;
+            await github.graphql(
+              `mutation($pullRequestId: ID!) {
+                markPullRequestReadyForReview(input: { pullRequestId: $pullRequestId }) {
+                  clientMutationId
+                }
+              }`,
+              { pullRequestId },
+            );
